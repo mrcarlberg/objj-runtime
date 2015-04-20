@@ -1,0 +1,3 @@
+#!/usr/bin/env node
+
+require("../lib/objective-j").run(system.args);
