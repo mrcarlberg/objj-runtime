@@ -26,5 +26,5 @@
         "grunt": "~0.4.2",
         "grunt-contrib-concat": "~0.4.0"
     },
-    "bin": {"objjc": "./bin/objjc.js"}
+    "bin": {"objj": "./bin/objj"}
 }
