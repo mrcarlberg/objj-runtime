@@ -16,9 +16,9 @@
 (function(mod)
 {
     if (typeof exports == "object" && typeof module == "object")
-        return mod(exports, require("objj-compiler")); // CommonJS
+        return mod(exports, require("objj-transpiler")); // CommonJS
     if (typeof define == "function" && define.amd)
-        return define(["exports", "objj-compiler"], mod); // AMD
+        return define(["exports", "objj-transpiler"], mod); // AMD
     mod(this.objJRuntime || (this.objJRuntime = {}), ObjJAcornCompiler); // Plain browser env
 })(function(exports, ObjJAcornCompiler)
 {
