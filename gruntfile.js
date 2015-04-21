@@ -48,7 +48,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('preprocess', 'Preprocess the concated Javascript file', function() {
     var fs = require('fs');
-    var compiler = require("objj-compiler");
+    var compiler = require("objj-transpiler");
     var infile = "build/objective-j.js";
     var source = fs.readFileSync(infile, "utf8");
 
