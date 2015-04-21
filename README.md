@@ -11,13 +11,26 @@ It uses an Objective-J to JavaScript [compiler][objj-transpiler] by Martin Carlb
 
 ## How to use
 
-Compile and build the runtime with grunt
+Install using npm
+
+```
+npm install objj-runtime
+```
+
+Make sure you have grunt commandline installed. If not install with
+
+```
+npm install -g grunt-cli
+
+```
+
+Compile and build the runtime with grunt from inside the objj-runtime directory.
 
 ```
 grunt
 ```
 
-Copy the Cappuccino Foundation framework to the Framework directory
+Copy a built Cappuccino Foundation framework to the Framework directory. You might need to create the Framework directory inside the objj-runtime directory.
 
 Create an Objective-J main.j file
 
