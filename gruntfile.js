@@ -19,6 +19,8 @@ module.exports = function(grunt) {
           'Objective-J/CFHTTPRequest.js',
           'Objective-J/CFPropertyList.js',
           'Objective-J/CFDictionary.js',
+          'Objective-J/CFError.js',
+          'Objective-J/CFNetworkErrors.js',
           'Objective-J/CFData.js',
           'Objective-J/CFURL.js',
           'Objective-J/MarkedStream.js',
