@@ -77,7 +77,9 @@ There are many things that don't work yet. For example you can't just compile yo
 
 ## Example
 
-Example of very simple backend webserver in Objective-J can be found here: http://mini.carlberg.org/dev/objj-node-webserver.zip
+Example of very simple backend webserver in Objective-J can be downloaded [here][objj-node-webserver] as a zip file.
+
+[objj-node-webserver]: http://mini.carlberg.org/dev/objj-node-webserver.zip
 
 Start the backend webserver from the command prompt with
 ```
