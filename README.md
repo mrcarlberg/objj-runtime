@@ -74,3 +74,27 @@ grunt
 ```
 
 There are many things that don't work yet. For example you can't just compile your files. You have to compile and run.
+
+## Example
+
+Example of very simple backend webserver in Objective-J can be found here: http://mini.carlberg.org/dev/objj-node-webserver.zip
+
+Start the backend webserver from the command prompt with
+```
+bin/objj main.j
+```
+
+From another command prompt json data can be stored with:
+```
+curl 127.0.0.1:1337/Name/42 -d '{"name": "martin"}'
+```
+
+It can be retrieved with:
+```
+curl 127.0.0.1:1337/Name/42
+```
+
+The url uses a pattern with entity and identifier for storage. It looks like this:
+```
+curl 127.0.0.1:1337/<entity>/<identifier>
+```
