@@ -49,34 +49,99 @@ exports.run = function(args)
 {
     if (args)
     {
+        function help(status) {
+          console.log("usage: " + path.basename(process.argv[1]) + " infile [--ecma3|--ecma5] [--strict-semicolons] [--track-comments]");
+          console.log("        [--include-comments] [--include-comment-line-break]");
+          console.log("        [--formatter <path>]  [--indent-tab] [--indent-width <n>] [--indent-string <string>]");
+          console.log("        [--track-spaces] [--track-locations] [--no-objj] [--no-preprocess]");
+          console.log("        [--no-debug-symbols] [--no-type-signatures] [--generate-objj]");
+          console.log("        [--no-source-map]");
+          console.log("        [-Dmacro[([p1, p2, ...])][=definition]] [--help]");
+          process.exit(status);
+        }
+
         // we expect args to be in the format:
-        //  1) "objj" path
+        //  1) "objj" [options] path [pgm-options]
         //  2) optional "-I" args
         //  3) real or "virtual" main.j
         //  4) optional program arguments
 
-        // copy the args since we're going to modify them
-        var argv = args.slice(2);
+        var options = {},
+            acornOptions = {},
+            argv = args.slice(2), // copy the args since we're going to modify them
+            argv0 = argv.shift();
 
-        if (argv[0] === "--version")
-        {
-            console.log(exports.fullVersionString());
-            return;
+        // We loop as long as there is an option that starts with '-'
+        while (argv0 && argv0.lastIndexOf('-', 0) === 0) {
+            if (argv0 === "--version")
+            {
+                console.log(exports.fullVersionString());
+            }
+            else if (argv0 == "--ecma3") acornOptions.ecmaVersion = 3;
+            else if (argv0 == "--ecma5") acornOptions.ecmaVersion = 5;
+            else if (argv0 == "--strict-semicolons") acornOptions.strictSemicolons = true;
+            else if (argv0 == "--track-comments") acornOptions.trackComments = true;
+            else if (argv0 == "--include-comment-line-break") acornOptions.trackCommentsIncludeLineBreak = true;
+            else if (argv0 == "--include-comments") options.includeComments = true, acornOptions.trackComments = true;
+            else if (argv0 == "--track-spaces") acornOptions.trackSpaces = true;
+            else if (argv0 == "--track-locations") acornOptions.locations = true;
+            else if (argv0 == "--no-objj") acornOptions.objj = false;
+            else if (argv0 == "--no-preprocess") acornOptions.preprocess = false;
+            else if (argv0 == "--generate-objj") options.generateObjJ = true;
+            //else if (argv0 == "--silent") silent = true;
+            //else if (argv0 == "--old-safari-bug") options.transformNamedFunctionDeclarationToAssignment = true;
+            else if (argv0 == "--no-source-map") options.sourceMap = false;
+            else if (argv0 == "--no-debug-symbols") options.includeDebugSymbols = false;
+            else if (argv0 == "--no-type-signatures") options.includeTypeSignatures = false;
+            else if (argv0 == "--indent-width") options.indentationSpaces = parseInt(argv.shift());
+            else if (argv0 == "--indent-string") {
+              if (options.indentationType) {
+                  console.log("Can't have both '--indent-string' and '--indent-tab'");
+                  help(1);
+              } else
+                  options.indentationType = argv.shift();
+            }
+            else if (argv0 == "--indent-tab") {
+              if (options.indentationType) {
+                  console.log("Can't have both '--indent-string' and '--indent-tab'");
+                  help(1);
+              } else {
+                  options.indentationType = "\t";
+                  if (!options.indentationSpaces) options.indentationSpaces = 1;
+              }
+            }
+            else if (argv0 == "--formatter") {
+            var filePath = argv.shift(),
+                relative = filePath.substring(0, 1) !== '/',
+                jsonFile = JSON.parse(fs.readFileSync(relative ? path.resolve(process.cwd(), filePath) : filePath,'utf8'));
+
+                options.formatDescription = jsonFile;
+            }
+            //else if (argv0 == "--output" || argv0 == "-o") output = process.argv[++i];
+            else if (argv0.slice(0, 2) == "-D") (acornOptions.macros || (acornOptions.macros = [])).push(argv0.slice(2));
+            else if (argv0 == "--help") help(0);
+            else if (argv0 == "-") help(1);
+
+            else if (argv0.lastIndexOf('-I', 0) === 0)
+                OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, argv0.substr(2).split(':'));
+
+            argv0 = argv.shift();
         }
-
-        while (argv.length && argv[0].indexOf('-I') === 0)
-            OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, argv.shift().substr(2).split(':'));
     }
 
-    if (argv && argv.length > 0)
+    if (argv0)
     {
-        var arg0 = argv.shift();
-        var mainFilePath = FILE.canonical(arg0);
+        var mainFilePath = FILE.canonical(argv0);
 
         exports.make_narwhal_factory(mainFilePath)(require, { }, module, system, console.log);
 
         if (typeof main === "function")
-            main([arg0].concat(argv));
+        {
+            var arguments = [argv0];
+            if (argv && argv.length > 0)
+                arguments = arguments.concat(argv);
+            main(arguments);
+        }
 
         require("./timeout").serviceTimeouts();
     }
