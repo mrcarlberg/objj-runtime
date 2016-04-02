@@ -55,6 +55,19 @@ module.exports = function(grunt) {
     var source = fs.readFileSync(infile, "utf8");
 
     compiled = compiler.compile(source, infile, null);
+    var warnings = compiler.warningsAndErrors,
+        anyErrors = false;
+
+    if (warnings) for (var i = 0; i < warnings.length; i++)
+    {
+        var warning = warnings[i],
+            message = compiler.prettifyMessage(warning);
+
+        // Set anyErrors to 'true' if there are any errors in the list
+        anyErrors = anyErrors || warning.messageType === "ERROR";
+        console.log(message);
+    }
+    if (anyErrors) throw "Compiler Error";
     fs.writeFileSync("lib/objective-j.js", compiled.code());
   });
 
