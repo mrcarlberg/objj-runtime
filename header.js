@@ -19,8 +19,8 @@
         return mod(exports, require("objj-transpiler")); // CommonJS
     if (typeof define == "function" && define.amd)
         return define(["exports", "objj-transpiler"], mod); // AMD
-    mod(this.objJRuntime || (this.objJRuntime = {}), ObjJAcornCompiler); // Plain browser env
-})(function(exports, ObjJAcornCompiler)
+    mod(this.objJRuntime || (this.objJRuntime = {}), ObjJCompiler); // Plain browser env
+})(function(exports, ObjJCompiler)
 {
     var FILE = require("common-node")["fs-base"];
     var sprintf = require("./printf").sprintf;
