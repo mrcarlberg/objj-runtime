@@ -35,7 +35,7 @@ function BundleTask(aName, anApplication)
 {
     Task.apply(this, arguments);
 
-    var ignoreCommonJS = system.env["CAPP_IGNORE_COMMONJS_ENV"];
+    var ignoreCommonJS = ((typeof system !== "undefined" && system) || process).env["CAPP_IGNORE_COMMONJS_ENV"];
 
     if (ignoreCommonJS && ignoreCommonJS.toLowerCase() == "no" || ignoreCommonJS == "1")
         this.setEnvironments([environment.Browser]);

@@ -3,7 +3,7 @@
     "description": "JavaScript (ECMAScript) and Objective-J runtime",
     "homepage": "http://github.com/mrcarlberg/objj-runtime",
     "main": "lib/objective-j.js",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "engines": {
         "node": ">=0.10.0"
     },
@@ -39,7 +39,6 @@
         "utility"
     ],
     "dependencies": {
-        "common-node": ">=0.10.15",
         "grunt": "^1.0.3",
         "grunt-contrib-concat": "^1.0.1",
         "objj-transpiler": ">=0.4",

@@ -50,7 +50,7 @@ exports.run = function(args)
     if (args)
     {
         function help(status) {
-          console.log("usage: " + path.basename(process.argv[1]) + " infile [--ecma3|--ecma5] [--strict-semicolons] [--track-comments]");
+          console.log("usage: " + require('path').basename(process.argv[1]) + " infile [--ecma3|--ecma5] [--strict-semicolons] [--track-comments]");
           console.log("        [--include-comments] [--include-comment-line-break]");
           console.log("        [--formatter <path>]  [--indent-tab] [--indent-width <n>] [--indent-string <string>]");
           console.log("        [--track-spaces] [--track-locations] [--no-objj] [--no-preprocess]");
@@ -131,10 +131,15 @@ exports.run = function(args)
 
     if (argv0)
     {
-        var mainFilePath = FILE.canonical(argv0);
+        var mainFilePath = PATH.resolve(argv0);
 
-        exports.make_narwhal_factory(mainFilePath)(require, { }, module, system, console.log);
+        // resolve and read all links
+        while ((NODEFILE.existsSync(mainFilePath) && NODEFILE.lstatSync(mainFilePath).isSymbolicLink())) {
+            mainFilePath = PATH.resolve(NODEFILE.readlinkSync(mainFilePath))
+        }
+
         FileExecutable.setCurrentCompilerFlags(options);
+        exports.make_narwhal_factory(mainFilePath)(require, { }, module, typeof system !== "undefined" && system, console.log);
 
         if (typeof main === "function")
         {
@@ -183,9 +188,9 @@ exports.make_narwhal_factory = function(path, basePath, filenameTranslateDiction
     return function(require, exports, module, system, print)
     {
         Executable.setCommonJSParameters("require", "exports", "module", "system", "print", "window");
-        Executable.setCommonJSArguments(require, exports, module, system, print, window);
+        Executable.setCommonJSArguments(require, exports, module, typeof system !== "undefined" && system, print, window);
         filenameTranslateDictionary && Executable.setFilenameTranslateDictionary(filenameTranslateDictionary);
-        Executable.fileImporterForURL(basePath ? basePath : FILE.directory(path))(path, YES);
+        Executable.fileImporterForURL(basePath ? basePath : PATH.dirname(path))(path, YES);
     }
 };
 
@@ -194,7 +199,8 @@ exports.make_narwhal_factory = function(path, basePath, filenameTranslateDiction
 var pkg = null;
 function getPackage() {
     if (!pkg)
-        pkg = JSON.parse(FILE.path(module.filename).directory().directory().join("package.json").read({ charset : "UTF-8" }));
+        //pkg = JSON.parse(FILE.path(module.filename).directory().directory().join("package.json").read({ charset : "UTF-8" }));
+        pkg = JSON.parse(NODEFILE.readFileSync(PATH.join("..", "..","package.json"), 'utf8'));
     return pkg;
 }
 
