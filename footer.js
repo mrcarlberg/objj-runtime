@@ -37,8 +37,8 @@ for (var name in catalog)
 OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, exports.objj_frameworks);
 OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, exports.objj_debug_frameworks);
 
-if (system.env["OBJJ_INCLUDE_PATHS"])
-    OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, system.env["OBJJ_INCLUDE_PATHS"].split(":"));
+if (((typeof system !== "undefined" && system) || process).env["OBJJ_INCLUDE_PATHS"])
+    OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, ((typeof system !== "undefined" && system) || process).env["OBJJ_INCLUDE_PATHS"].split(":"));
 
 // bring the "window" object into scope.
 // TODO: somehow make window object the top scope?
@@ -134,6 +134,7 @@ exports.run = function(args)
         var mainFilePath = FILE.canonical(argv0);
 
         exports.make_narwhal_factory(mainFilePath)(require, { }, module, system, console.log);
+        FileExecutable.setCurrentCompilerFlags(options);
 
         if (typeof main === "function")
         {
@@ -219,6 +220,5 @@ for (var key in exports)
         global.ObjectiveJ[key] = exports[key];
 
 if (require.main == module.id)
-    exports.run(system.args);
-
+    exports.run((typeof system !== "undefined" && system.args) || process.argv);
 });

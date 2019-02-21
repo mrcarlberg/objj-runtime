@@ -2,27 +2,53 @@
     "name": "objj-runtime",
     "description": "JavaScript (ECMAScript) and Objective-J runtime",
     "homepage": "http://github.com/mrcarlberg/objj-runtime",
-    "main": "xxxxxxx.js",
-    "version": "0.1.10",
-    "engines": {"node": ">=0.10.0"},
-    "preferGlobal": true,
-    "maintainers": [{"name": "Martin Carlberg",
-                     "email": "martin@carlberg.org",
-                     "web": "http://carlberg.org"}],
-    "repository": {"type": "git",
-                   "url": "http://github.com/mrcarlberg/objj-runtime"},
-    "licenses": [{"type": "MIT",
-                  "url": "http://raw.github.com/mrcarlberg/objj-runtime/master/LICENSE"}],
-    "keywords": ["runtime", "source", "source code", "JavaScript", "ECMAScript", "Objective-J", "preprocessor", "pre-processor", "pre processor", "processor", "utility", "beautifier", "formatter"],
-    "dependencies": {
-        "objj-transpiler": ">=0.3",
-        "common-node": ">=0.10.15",
-        "xmldom": ">=0.1.19",
-        "xmlhttprequest": ">=1.6.0",
-        "readline-history": ">=1.2.0",
-        "grunt": "~0.4.2",
-        "grunt-contrib-concat": "~0.4.0"
+    "main": "lib/objective-j.js",
+    "version": "0.2.0",
+    "engines": {
+        "node": ">=0.10.0"
     },
-
-    "bin": {"objj": "./bin/objj"}
+    "preferGlobal": true,
+    "maintainers": [
+        {
+            "name": "Martin Carlberg",
+            "email": "martin@carlberg.org",
+            "web": "http://carlberg.org"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/mrcarlberg/objj-runtime"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "http://raw.github.com/mrcarlberg/objj-runtime/master/LICENSE"
+        }
+    ],
+    "keywords": [
+        "runtime",
+        "source",
+        "source code",
+        "JavaScript",
+        "ECMAScript",
+        "Objective-J",
+        "preprocessor",
+        "pre-processor",
+        "pre processor",
+        "processor",
+        "utility"
+    ],
+    "dependencies": {
+        "common-node": ">=0.10.15",
+        "grunt": "^1.0.3",
+        "grunt-contrib-concat": "^1.0.1",
+        "objj-transpiler": ">=0.4",
+        "readline-history": ">=1.2.0",
+        "xmldom": "^0.1.27",
+        "xmlhttprequest": ">=1.6.0"
+    },
+    "bin": {
+        "objj": "./bin/objj",
+        "objc": "./bin/objc"
+    }
 }
