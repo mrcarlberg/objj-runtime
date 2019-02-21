@@ -27,6 +27,7 @@ module.exports = function(grunt) {
           'Objective-J/CFBundle.js',
           'Objective-J/StaticResource.js',
 //          'Objective-J/Preprocessor.js',
+//          'Objective-J/source-map.js',
 //          'Objective-J/acorn.js',
 //          'Objective-J/acornwalk.js',
 //          'Objective-J/ObjJAcornCompiler.js',
