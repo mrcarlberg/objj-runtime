@@ -55,14 +55,14 @@ module.exports = function(grunt) {
     var infile = "build/objective-j.js";
     var source = fs.readFileSync(infile, "utf8");
 
-    compiled = compiler.compile(source, infile, null);
-    var warnings = compiler.warningsAndErrors,
+    var compiled = compiler.compile(source, infile, null);
+    var warnings = compiled.warningsAndErrors,
         anyErrors = false;
 
     if (warnings) for (var i = 0; i < warnings.length; i++)
     {
         var warning = warnings[i],
-            message = compiler.prettifyMessage(warning);
+            message = compiled.prettifyMessage(warning);
 
         // Set anyErrors to 'true' if there are any errors in the list
         anyErrors = anyErrors || warning.messageType === "ERROR";
