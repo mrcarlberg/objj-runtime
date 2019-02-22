@@ -48,6 +48,6 @@
     },
     "bin": {
         "objj": "./bin/objj",
-        "objc": "./bin/objc"
+        "objjc": "./bin/objjc"
     }
 }
