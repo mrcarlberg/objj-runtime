@@ -1,3 +1,0 @@
-#!/usr/bin/env node
-
-require("../lib/objective-j/compiler").main(process.args);
