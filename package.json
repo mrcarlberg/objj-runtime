@@ -47,6 +47,6 @@
         "xmlhttprequest-ts": ">=1.0.1"
     },
     "bin": {
-        "objj": "./bin/objj",
+        "objj": "./bin/objj"
     }
 }
