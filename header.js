@@ -28,10 +28,15 @@
 
     var window = exports.window = require("./browser").window;
 	// setup OBJJ_HOME, OBJJ_INCLUDE_PATHS, etc
-    window.OBJJ_HOME = exports.OBJJ_HOME = PATH.resolve(module.parent.filename, "..");
+    window.OBJJ_HOME = exports.OBJJ_HOME = PATH.resolve(module.parent.filename, "../..");
 
-    var frameworksPath = PATH.join(window.OBJJ_HOME, "Frameworks");
+    var defaultFrameworksPath = PATH.join(window.OBJJ_HOME, "Frameworks");
+    var frameworksPath = PATH.join(process.cwd(), "Frameworks");
+    var includepaths = [defaultFrameworksPath];
 
-    var OBJJ_INCLUDE_PATHS = global.OBJJ_INCLUDE_PATHS = exports.OBJJ_INCLUDE_PATHS = [frameworksPath];
+    if (defaultFrameworksPath !== frameworksPath)
+        includepaths.unshift(frameworksPath);
+
+    var OBJJ_INCLUDE_PATHS = global.OBJJ_INCLUDE_PATHS = exports.OBJJ_INCLUDE_PATHS = includepaths;
 
     var print = console.log;
