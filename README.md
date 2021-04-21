@@ -60,7 +60,7 @@ bin/objj main.j
 You can debug with the node-inspector and Chrome.
 
 ```
-node --debug-brk bin/objj main.j
+node --inspect-brk bin/objj main.j
 ```
 
 A framework that is already built can be use if placed inside the Framework directory.
