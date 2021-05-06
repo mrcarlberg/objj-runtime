@@ -44,7 +44,7 @@
         "objj-transpiler": "^0.4.0",
         "readline-history": ">=1.2.0",
         "xmldom": "^0.6.0",
-        "xmlhttprequest-ts": ">=1.0.1"
+        "xmlhttprequest-ssl": ">=1.6.2"
     },
     "bin": {
         "objj": "./bin/objj"
