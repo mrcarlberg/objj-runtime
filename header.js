@@ -42,3 +42,13 @@
     var OBJJ_INCLUDE_PATHS = global.OBJJ_INCLUDE_PATHS = exports.OBJJ_INCLUDE_PATHS = includepaths;
 
     var print = console.log;
+
+    // Add extension for .j file so require('myfile.j') fill work
+
+    var BuiltinModule = require("module");
+    // Guard against poorly mocked module constructors. Probably unnecessary
+    var Module = module.constructor.length > 1 ? module.constructor : BuiltinModule;
+
+    Module._extensions['.j'] = function objJLoader(mod, filename) {
+        return objj_importFile(filename, YES);
+    }
