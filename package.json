@@ -39,12 +39,14 @@
         "utility"
     ],
     "dependencies": {
-        "grunt": "^1.3.0",
-        "grunt-contrib-concat": "^1.0.1",
-        "objj-transpiler": "^0.4.0",
+        "objj-transpiler": ">=0.4.0",
         "readline-history": ">=1.2.0",
         "xmldom": "^0.6.0",
         "xmlhttprequest-ssl": ">=1.6.2"
+    },
+    "devDependencies": {
+        "grunt": "^1.3.0",
+        "grunt-contrib-concat": "^1.0.1",
     },
     "bin": {
         "objj": "./bin/objj"
