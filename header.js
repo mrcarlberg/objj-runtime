@@ -26,7 +26,7 @@
     var PATH = require("path");
     var sprintf = require("./printf").sprintf;
 
-    exports.term = require(./term);
+    exports.term = require("./term");
 
     var window = exports.window = require("./browser").window;
 	// setup OBJJ_HOME, OBJJ_INCLUDE_PATHS, etc
