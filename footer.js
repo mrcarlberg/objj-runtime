@@ -133,21 +133,27 @@ exports.run = function(args)
     {
         var mainFilePath = PATH.resolve(argv0);
 
+        var callback = function() {
+            if (typeof main === "function")
+            {
+                var arguments = [argv0];
+                if (argv && argv.length > 0)
+                    arguments = arguments.concat(argv);
+                main(arguments);
+            }
+            else
+            {
+                console.error("No main function is found for " + mainFilePath);
+            }
+        }
+
         // resolve and read all links
         while ((NODEFILE.existsSync(mainFilePath) && NODEFILE.lstatSync(mainFilePath).isSymbolicLink())) {
             mainFilePath = PATH.resolve(NODEFILE.readlinkSync(mainFilePath))
         }
 
         FileExecutable.setCurrentCompilerFlags(options);
-        exports.make_narwhal_factory(mainFilePath)(require, { }, module, typeof system !== "undefined" && system, console.log);
-
-        if (typeof main === "function")
-        {
-            var arguments = [argv0];
-            if (argv && argv.length > 0)
-                arguments = arguments.concat(argv);
-            main(arguments);
-        }
+        exports.make_narwhal_factory(mainFilePath, null, null, callback)(require, { }, module, typeof system !== "undefined" && system, console.log);
 
         require("./timeout").serviceTimeouts();
     }
@@ -183,14 +189,14 @@ exports.repl = function()
 };
 
 // creates a narwhal factory function in the objj module scope
-exports.make_narwhal_factory = function(path, basePath, filenameTranslateDictionary)
+exports.make_narwhal_factory = function(path, basePath, filenameTranslateDictionary, aCallback)
 {
     return function(require, exports, module, system, print)
     {
         Executable.setCommonJSParameters("require", "exports", "module", "system", "print", "window");
         Executable.setCommonJSArguments(require, exports, module, typeof system !== "undefined" && system, print, window);
         filenameTranslateDictionary && Executable.setFilenameTranslateDictionary(filenameTranslateDictionary);
-        Executable.fileImporterForURL(basePath ? basePath : PATH.dirname(path))(path, YES);
+        Executable.fileImporterForURL(basePath ? basePath : PATH.dirname(path))(path, YES, aCallback);
     }
 };
 
