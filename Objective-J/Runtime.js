@@ -508,7 +508,7 @@ var _class_initialize = function(/*Class*/ aClass)
             initializeImp = metaMethodDTable["initialize"];
 
         if (initializeImp)
-            initializeImp(aClass, "initialize")
+            initializeImp(aClass, "initialize");
 
         CHANGEINFO(meta, CLS_INITIALIZED, CLS_INITIALIZING);
     }
@@ -585,7 +585,7 @@ GLOBAL(_objj_forward) = function(self, _cmd)
     if (implementation)
         return implementation(self, SEL_doesNotRecognizeSelector_, _cmd);
 
-    throw class_getName(isa) + " does not implement doesNotRecognizeSelector:. Did you forget a superclass for " + class_getName(isa) + "?";
+    throw class_getName(isa) + " does not implement doesNotRecognizeSelector: when sending " + sel_getName(_cmd) + ". Did you forget a superclass for " + class_getName(isa) + "?";
 };
 
 // I think this forward:: may need to be a common method, instead of defined in CPObject.
@@ -838,7 +838,7 @@ var __objj_msgSend__StackDepth = 0;
 GLOBAL(objj_msgSend) = function(/*id*/ aReceiver, /*SEL*/ aSelector)
 {
     if (aReceiver == nil)
-        return nil;
+        return aReceiver;
 
     var isa = aReceiver.isa;
 
