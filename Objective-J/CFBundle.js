@@ -365,7 +365,6 @@ function finishBundleLoadingWithError(/*CFBundle*/ aBundle, /*Event*/ anError)
 
 function loadExecutableAndResources(/*Bundle*/ aBundle, /*BOOL*/ shouldExecute)
 {
-    console.log("loadExecutableAndResources");
     if (!aBundle.mostEligibleEnvironment())
         return failure();
 
@@ -687,7 +686,6 @@ function CFBundleNotifySpriteSupportListeners()
 
 function CFBundleTestSpriteTypes(/*Array*/ spriteTypes)
 {
-    console.log("CFBundleTestSpriteTypes");
     // If we don't support Images, then clearly we don't support sprites.
     if (!("Image" in global) || spriteTypes.length < 2)
     {
@@ -697,7 +695,6 @@ function CFBundleTestSpriteTypes(/*Array*/ spriteTypes)
     }
 
     var image = new Image();
-    console.log("imageprint: " + image);
     image.onload = function()
     {
         if (image.width === 1 && image.height === 1)
@@ -713,9 +710,7 @@ function CFBundleTestSpriteTypes(/*Array*/ spriteTypes)
     {
         CFBundleTestSpriteTypes(spriteTypes.slice(2));
     };
-
     image.src = spriteTypes[1];
-    image.onerror();
 }
 
 function executeBundle(/*Bundle*/ aBundle, /*Function*/ aCallback)
