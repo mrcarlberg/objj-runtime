@@ -70,8 +70,7 @@ exports.run = function(args)
             acornOptions = {},
             argv = args.slice(1), // copy the args since we're going to modify them
             argv0 = argv.shift();
-        console.log(argv);
-        console.log(argv0);
+
         // We loop as long as there is an option that starts with '-'
         while (argv0 && argv0.lastIndexOf('-', 0) === 0) {
             if (argv0 === "--version")
