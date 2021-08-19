@@ -3,7 +3,7 @@
     "description": "JavaScript (ECMAScript) and Objective-J runtime",
     "homepage": "http://github.com/mrcarlberg/objj-runtime",
     "main": "lib/objective-j.js",
-    "version": "0.4.7-12",
+    "version": "1.1.1",
     "engines": {
         "node": ">=0.10.0"
     },
@@ -49,12 +49,9 @@
     "devDependencies": {
         "grunt": "^1.4.1",
         "grunt-contrib-concat": "^1.0.1",
-        "require-self": "^0.2.3"
+        "@objj/runtime": "file:."
     },
     "bin": {
         "objj": "./bin/objj"
-    },
-    "scripts": {
-        "prepare": "require-self"
     }
 }
