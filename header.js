@@ -30,7 +30,7 @@
 
     var window = exports.window = require("./browser").window;
 	// setup OBJJ_HOME, OBJJ_INCLUDE_PATHS, etc
-    window.OBJJ_HOME = exports.OBJJ_HOME = PATH.resolve(module.parent.filename, "../..");
+    window.OBJJ_HOME = exports.OBJJ_HOME = module.parent ? PATH.resolve(module.parent.filename, "../..") : process.cwd();
 
     var defaultFrameworksPath = PATH.join(window.OBJJ_HOME, "Frameworks");
     var frameworksPath = PATH.join(process.cwd(), "Frameworks");
