@@ -1,11 +1,11 @@
 {
-    "name": "objj-runtime",
+    "name": "@objj/runtime",
     "description": "JavaScript (ECMAScript) and Objective-J runtime",
     "homepage": "http://github.com/mrcarlberg/objj-runtime",
     "main": "lib/objective-j.js",
-    "version": "0.4.6",
+    "version": "1.1.1",
     "engines": {
-        "node": ">=0.10.0"
+        "node": ">=14.0.0"
     },
     "preferGlobal": true,
     "maintainers": [
@@ -41,12 +41,15 @@
     "dependencies": {
         "objj-transpiler": "^0.5.0",
         "readline-history": ">=1.2.0",
+        "uuid": "^8.3.2",
         "xmldom": "^0.6.0",
-        "xmlhttprequest-ssl": ">=1.6.2"
+        "xmlhttprequest-ssl": ">=1.6.2",
+        "@objj/utils": "latest"
     },
     "devDependencies": {
-        "grunt": "^1.4.0",
-        "grunt-contrib-concat": "^1.0.1"
+        "grunt": "^1.4.1",
+        "grunt-contrib-concat": "^1.0.1",
+        "@objj/runtime": "file:."
     },
     "bin": {
         "objj": "./bin/objj"

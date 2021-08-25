@@ -695,7 +695,6 @@ function CFBundleTestSpriteTypes(/*Array*/ spriteTypes)
     }
 
     var image = new Image();
-
     image.onload = function()
     {
         if (image.width === 1 && image.height === 1)
@@ -711,7 +710,6 @@ function CFBundleTestSpriteTypes(/*Array*/ spriteTypes)
     {
         CFBundleTestSpriteTypes(spriteTypes.slice(2));
     };
-
     image.src = spriteTypes[1];
 }
 
@@ -828,7 +826,11 @@ function decompileStaticFile(/*Bundle*/ aBundle, /*String*/ aString, /*String*/ 
         }
 
         else if (marker === MARKER_TEXT)
+        {
             file.write(text);
+            if (text.match(/^@STATIC;/))
+                file.decompile();
+        }
     }
 }
 

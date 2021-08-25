@@ -68,7 +68,7 @@ exports.run = function(args)
 
         var options = {},
             acornOptions = {},
-            argv = args.slice(2), // copy the args since we're going to modify them
+            argv = args.slice(1), // copy the args since we're going to modify them
             argv0 = argv.shift();
 
         // We loop as long as there is an option that starts with '-'
@@ -152,7 +152,7 @@ exports.run = function(args)
             mainFilePath = PATH.resolve(NODEFILE.readlinkSync(mainFilePath))
         }
 
-        FileExecutable.setCurrentCompilerFlags(options);
+        StaticResource.setCurrentCompilerFlags(options);
         exports.make_narwhal_factory(mainFilePath, null, null, callback)(require, { }, module, typeof system !== "undefined" && system, console.log);
 
         require("./timeout").serviceTimeouts();
@@ -224,6 +224,8 @@ exports.fullVersionString = function() {
         rev ? rev.slice(0,6) : null
     );
 }
+
+exports.utils = require("@objj/utils");
 
 global.ObjectiveJ = {};
 

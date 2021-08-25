@@ -27,6 +27,9 @@
     var sprintf = require("./printf").sprintf;
 
     exports.term = require("./term");
+    exports.parser = require("./args");
+
+    exports.jake = require("@objj/jake");
 
     var window = exports.window = require("./browser").window;
 	// setup OBJJ_HOME, OBJJ_INCLUDE_PATHS, etc
@@ -34,6 +37,7 @@
 
     var defaultFrameworksPath = PATH.join(window.OBJJ_HOME, "Frameworks");
     var frameworksPath = PATH.join(process.cwd(), "Frameworks");
+    // FIXME: temporary
     var includepaths = [defaultFrameworksPath];
 
     if (defaultFrameworksPath !== frameworksPath)
