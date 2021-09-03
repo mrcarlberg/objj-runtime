@@ -260,7 +260,8 @@ Executable.prototype.setCode = function(code, sourceMap)
     //    var functionText = "(function(){"+GET_CODE(aFragment)+"/**/\n})\n//# sourceURL="+GET_FILE(aFragment).path;
     //    compiled = eval(functionText);
     //}
-        this._function = new Function(parameters, code);
+        var filepath = absoluteString.startsWith("file:") ? absoluteString.slice(5) : absoluteString; // FIXME: In the future when we are supporting > ES5, change this to 'const filepath = ...'
+        this._function = new Function(parameters, "const __filename='" + filepath + "';" + code);
         this._function.displayName = absoluteString;
 #if COMMONJS
     }
