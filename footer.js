@@ -45,7 +45,7 @@ if (((typeof system !== "undefined" && system) || process).env["OBJJ_INCLUDE_PAT
 with (window)
 {
 // runs the objj repl or file provided in args
-exports.run = function(args)
+exports.run = function(args, someCompilerOptions)
 {
     if (args)
     {
@@ -66,7 +66,7 @@ exports.run = function(args)
         //  3) real or "virtual" main.j
         //  4) optional program arguments
 
-        var options = {},
+        var options = someCompilerOptions || {},
             acornOptions = {},
             argv = args.slice(1), // copy the args since we're going to modify them
             argv0 = argv.shift();
@@ -152,6 +152,7 @@ exports.run = function(args)
             mainFilePath = PATH.resolve(NODEFILE.readlinkSync(mainFilePath))
         }
 
+        options.acornOptions = acornOptions;
         StaticResource.setCurrentCompilerFlags(options);
         exports.make_narwhal_factory(mainFilePath, null, null, callback)(require, { }, module, typeof system !== "undefined" && system, console.log);
 
