@@ -100,7 +100,7 @@ StaticResource.prototype.resolve = function(/*BOOL*/ dontCompile, /*Array*/ comp
                     acornOptions = compilerOptions.acornOptions;
 
                 if (acornOptions)
-                    compilerOptions.acornOptions = Object.asign({}, acornOptions);
+                    compilerOptions.acornOptions = Object.assign({}, acornOptions);
 
                 // If no include files are set use the include files from the bundle, if any.
                 if (!compilerOptions.includeFiles)
