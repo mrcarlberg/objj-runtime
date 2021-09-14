@@ -235,8 +235,9 @@ Executable.prototype.setCode = function(code, sourceMap)
     // * Firebug: http://blog.getfirebug.com/2009/08/11/give-your-eval-a-name-with-sourceurl/
     //if (YES) {
         var absoluteString = this.URL().absoluteString();
+        var filepath = absoluteString.startsWith("file:") ? absoluteString.slice(5) : absoluteString; // FIXME: In the future when we are supporting > ES5, change this to 'const filepath = ...'
 
-        code += "/**/\n//# sourceURL=" + absoluteString + "s";
+        code += "/**/\n//# sourceURL=" + encodeURI(filepath) + "s";
 
         if (sourceMap)
         {
@@ -262,9 +263,8 @@ Executable.prototype.setCode = function(code, sourceMap)
     //    var functionText = "(function(){"+GET_CODE(aFragment)+"/**/\n})\n//# sourceURL="+GET_FILE(aFragment).path;
     //    compiled = eval(functionText);
     //}
-        var filepath = absoluteString.startsWith("file:") ? absoluteString.slice(5) : absoluteString; // FIXME: In the future when we are supporting > ES5, change this to 'const filepath = ...'
         this._function = new Function(parameters, "const __filename='" + filepath + "';" + code);
-        this._function.displayName = absoluteString;
+        this._function.displayName = this.URL().lastPathComponent();
 #if COMMONJS
     }
 #endif
