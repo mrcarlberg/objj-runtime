@@ -55,7 +55,7 @@ exports.run = function(args, someCompilerOptions)
           console.log("        [--formatter <path>]  [--indent-tab] [--indent-width <n>] [--indent-string <string>]");
           console.log("        [--track-spaces] [--track-locations] [--no-objj] [--no-preprocess]");
           console.log("        [--no-debug-symbols] [--no-type-signatures] [--generate-objj]");
-          console.log("        [--no-source-map]");
+          console.log("        [--no-source-map] [-x | --xml] [-m | --multifiles] [-I<objj/include/paths>]");
           console.log("        [-Dmacro[([p1, p2, ...])][=definition]] [--help]");
           process.exit(status);
         }
@@ -69,7 +69,8 @@ exports.run = function(args, someCompilerOptions)
         var options = someCompilerOptions || {},
             acornOptions = {},
             argv = args.slice(1), // copy the args since we're going to modify them
-            argv0 = argv.shift();
+            argv0 = argv.shift(),
+            multipleFiles = false;
 
         // We loop as long as there is an option that starts with '-'
         while (argv0 && argv0.lastIndexOf('-', 0) === 0) {
@@ -119,6 +120,8 @@ exports.run = function(args, someCompilerOptions)
             }
             //else if (argv0 == "--output" || argv0 == "-o") output = process.argv[++i];
             else if (argv0.slice(0, 2) == "-D") (acornOptions.macros || (acornOptions.macros = [])).push(argv0.slice(2));
+            else if (argv0 === "-x" || argv0 === "--xml") exports.messageOutputFormatInXML = true;
+            else if (argv0 === "-m" || argv0 === "--multifiles") multipleFiles = true;
             else if (argv0 == "--help") help(0);
             else if (argv0 == "-") help(1);
 
@@ -140,6 +143,10 @@ exports.run = function(args, someCompilerOptions)
                 if (argv && argv.length > 0)
                     arguments = arguments.concat(argv);
                 main(arguments);
+            }
+            else if (multipleFiles && (argv0 = argv.shift())) {
+                mainFilePath = PATH.resolve(argv0);
+                exports.make_narwhal_factory(mainFilePath, null, null, callback)(require, { }, module, typeof system !== "undefined" && system, console.log);
             }
             else
             {
