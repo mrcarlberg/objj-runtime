@@ -284,68 +284,85 @@ CFBundle.prototype.isLoaded = function()
 
 DISPLAY_NAME(CFBundle.prototype.isLoaded);
 
-CFBundle.prototype.load = function(/*BOOL*/ shouldExecute)
+// This function is async but will never throw (reject) as we just want to be able
+// to wait until everything is finished with 'await mybundle.load()'
+// Events will be sent when finished or an error occur.
+CFBundle.prototype.load = async function(/*BOOL*/ shouldExecute)
 {
     if (this._loadStatus !== CFBundleUnloaded)
         return;
 
-    this._loadStatus = CFBundleLoading | CFBundleLoadingInfoPlist;
+    var self = this;
 
-    var self = this,
-        bundleURL = this.bundleURL(),
-        parentURL = new CFURL("..", bundleURL);
-
-    if (parentURL.absoluteString() === bundleURL.absoluteString())
-        parentURL = parentURL.schemeAndAuthority();
-
-    StaticResource.resolveResourceAtURL(parentURL, YES, function(aStaticResource)
+    return new Promise(function(resolve, reject)
     {
-        var resourceName = bundleURL.lastPathComponent();
-
-        self._staticResource =  aStaticResource._children[resourceName] ||
-                                new StaticResource(bundleURL, aStaticResource, YES, NO);
-
-        function onsuccess(/*Event*/ anEvent)
+        var resolveAndRemoveListener = function()
         {
-            self._loadStatus &= ~CFBundleLoadingInfoPlist;
+            self.removeEventListener("load", resolveAndRemoveListener);
+            self.removeEventListener("error", resolveAndRemoveListener);
+            resolve();
+        }
+        self.addEventListener("load", resolveAndRemoveListener);
+        // We just resolve even as we get an error. We don't want to throw anything as event will be posted
+        self.addEventListener("error", resolveAndRemoveListener);
 
-            var infoDictionary = anEvent.request.responsePropertyList();
+        self._loadStatus = CFBundleLoading | CFBundleLoadingInfoPlist;
 
-            self._isValid = !!infoDictionary || CFBundle.mainBundle() === self;
+        var bundleURL = self.bundleURL(),
+            parentURL = new CFURL("..", bundleURL);
 
-            if (infoDictionary)
+        if (parentURL.absoluteString() === bundleURL.absoluteString())
+            parentURL = parentURL.schemeAndAuthority();
+
+        StaticResource.resolveResourceAtURL(parentURL, YES, function(aStaticResource)
+        {
+            var resourceName = bundleURL.lastPathComponent();
+
+            self._staticResource =  aStaticResource._children[resourceName] ||
+                                    new StaticResource(bundleURL, aStaticResource, YES, NO);
+
+            function onsuccess(/*Event*/ anEvent)
             {
-                self._infoDictionary = infoDictionary;
+                self._loadStatus &= ~CFBundleLoadingInfoPlist;
 
-                var identifier = self._infoDictionary.valueForKey("CPBundleIdentifier");
+                var infoDictionary = anEvent.request.responsePropertyList();
 
-                if (identifier)
-                    CFBundlesWithIdentifiers[identifier] = self;
+                self._isValid = !!infoDictionary || CFBundle.mainBundle() === self;
+
+                if (infoDictionary)
+                {
+                    self._infoDictionary = infoDictionary;
+
+                    var identifier = self._infoDictionary.valueForKey("CPBundleIdentifier");
+
+                    if (identifier)
+                        CFBundlesWithIdentifiers[identifier] = self;
+                }
+
+                if (!self._infoDictionary)
+                {
+                    finishBundleLoadingWithError(self, new Error("Could not load bundle at \"" + self.bundleURL() + "\""));
+
+                    return;
+                }
+
+                if (self === CFBundle.mainBundle() && self.valueForInfoDictionaryKey("CPApplicationSize"))
+                    CPApplicationSizeInBytes = self.valueForInfoDictionaryKey("CPApplicationSize").valueForKey("executable") || 0;
+
+                loadLanguageForBundle(self);
+                loadExecutableAndResources(self, shouldExecute);
             }
 
-            if (!self._infoDictionary)
+            function onfailure()
             {
-                finishBundleLoadingWithError(self, new Error("Could not load bundle at \"" + path + "\""));
+                self._isValid = CFBundle.mainBundle() === self;
+                self._loadStatus = CFBundleUnloaded;
 
-                return;
+                finishBundleLoadingWithError(self, new Error("Could not load bundle at \"" + self.bundleURL() + "\""));
             }
 
-            if (self === CFBundle.mainBundle() && self.valueForInfoDictionaryKey("CPApplicationSize"))
-                CPApplicationSizeInBytes = self.valueForInfoDictionaryKey("CPApplicationSize").valueForKey("executable") || 0;
-
-            loadLanguageForBundle(self);
-            loadExecutableAndResources(self, shouldExecute);
-        }
-
-        function onfailure()
-        {
-            self._isValid = CFBundle.mainBundle() === self;
-            self._loadStatus = CFBundleUnloaded;
-
-            finishBundleLoadingWithError(self, new Error("Could not load bundle at \"" + self.bundleURL() + "\""));
-        }
-
-        new FileRequest(new CFURL("Info.plist", self.bundleURL()), onsuccess, onfailure);
+            new FileRequest(new CFURL("Info.plist", bundleURL), onsuccess, onfailure);
+        });
     });
 };
 
