@@ -30,6 +30,7 @@
     exports.parser = require("./args");
 
     exports.jake = require("@objj/jake");
+    exports.ObjJCompiler = ObjJCompiler;
 
     var window = exports.window = require("./browser").window;
 	// setup OBJJ_HOME, OBJJ_INCLUDE_PATHS, etc
