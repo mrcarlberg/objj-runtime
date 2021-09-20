@@ -39,11 +39,10 @@
         "utility"
     ],
     "dependencies": {
-        "@objj/utils": "latest",
-        "@xmldom/xmldom": ">=0.7.1",
-        "objj-transpiler": "^0.5.1",
+        "@objj/utils": ">=1.0.23",
+        "@xmldom/xmldom": ">=0.7.5",
+        "objj-transpiler": ">=0.5.6",
         "readline-history": ">=1.2.0",
-        "uuid": "^8.3.2",
         "xmlhttprequest-ssl": "^2.0.0"
     },
     "devDependencies": {
