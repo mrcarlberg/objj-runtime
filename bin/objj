@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require("../lib/objective-j").run(process.argv);
+require("../lib/objective-j").run(process.argv.slice(1));
