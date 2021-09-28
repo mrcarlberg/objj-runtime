@@ -2,7 +2,7 @@ GLOBAL(objj_eval) = function(/*String*/ aString)
 {
 #if COMMONJS
 #ifdef NODEJS
-    var url = FILE.join(process.cwd(), "/");
+    var url = PATH.join(process.cwd(), "/");
 #else
     var url = FILE.join(FILE.cwd(), "/");
 #endif
