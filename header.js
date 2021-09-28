@@ -48,7 +48,7 @@
 
     var print = console.log;
 
-    // Add extension for .j file so require('myfile.j') fill work
+    // Add extension for .j file so require('myfile.j') will work
 
     var BuiltinModule = require("module");
     // Guard against poorly mocked module constructors. Probably unnecessary
