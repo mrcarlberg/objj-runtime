@@ -68,7 +68,8 @@ exports.run = function(args, someCompilerOptions)
 
         var options = someCompilerOptions || {},
             acornOptions = {},
-            argv = args.slice(1), // copy the args since we're going to modify them
+            objjOptions = process.env.OBJJ_OPT,
+            argv = (objjOptions ? ObjectiveJ.utils.file.parse(objjOptions) : []).concat(args.slice(1)), // copy the args since we're going to modify them
             argv0 = argv.shift(),
             multipleFiles = false;
 
