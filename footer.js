@@ -125,8 +125,12 @@ exports.run = function(args, someCompilerOptions)
             else if (argv0 == "--help") help(0);
             else if (argv0 == "-") help(1);
 
-            else if (argv0.lastIndexOf('-I', 0) === 0)
-                OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, argv0.substr(2).split(':'));
+            else if (argv0.lastIndexOf('-I', 0) === 0) {
+                // If nothing after the '-I' take the next argument as path.
+                // If not take the argument directly after the '-I' and allow multiple paths separated by ':'
+                var filePaths = argv0.length === 2 ? [argv.shift()] : argv0.substr(2).split(':');
+                OBJJ_INCLUDE_PATHS.unshift.apply(OBJJ_INCLUDE_PATHS, filePaths);
+            }
 
             argv0 = argv.shift();
         }
