@@ -242,8 +242,6 @@ exports.fullVersionString = function() {
     );
 }
 
-exports.utils = require("@objj/utils");
-
 global.ObjectiveJ = {};
 
 for (var key in exports)

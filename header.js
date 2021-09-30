@@ -26,10 +26,11 @@
     var PATH = require("path");
     var sprintf = require("./printf").sprintf;
 
-    exports.term = require("./term");
-    exports.parser = require("./args");
+    exports.utils = require("@objj/utils");
+    exports.parser = exports.utils.args;
+    exports.term = exports.utils.term;
 
-    //exports.jake = require("@objj/jake");
+    exports.jake = require("@objj/jake");
     exports.ObjJCompiler = ObjJCompiler;
 
     var window = exports.window = require("./browser").window;
