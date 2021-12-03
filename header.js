@@ -38,9 +38,10 @@
     window.OBJJ_HOME = exports.OBJJ_HOME = module.parent ? PATH.resolve(module.parent.filename, "../..") : process.cwd();
 
     var defaultFrameworksPath = PATH.join(window.OBJJ_HOME, "Frameworks");
+    var defaultCappuccinoFrameworkPath = PATH.join(window.OBJJ_HOME, "../cappuccino/Frameworks")
     var frameworksPath = PATH.join(process.cwd(), "Frameworks");
     // FIXME: temporary
-    var includepaths = [defaultFrameworksPath];
+    var includepaths = [defaultFrameworksPath, defaultCappuccinoFrameworkPath];
 
     if (defaultFrameworksPath !== frameworksPath)
         includepaths.unshift(frameworksPath);
