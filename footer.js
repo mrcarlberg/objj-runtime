@@ -163,9 +163,9 @@ exports.run = function(args, someCompilerOptions)
         while ((NODEFILE.existsSync(mainFilePath) && NODEFILE.lstatSync(mainFilePath).isSymbolicLink())) {
             var linkPath = NODEFILE.readlinkSync(mainFilePath);
             if (!PATH.isAbsolute(linkPath)) {
-               mainFilePath = PATH.join(PATH.dirname(mainFilePath), linkPath);
+               linkPath = PATH.join(PATH.dirname(mainFilePath), linkPath);
             }
-            mainFilePath = PATH.resolve(mainFilePath);
+            mainFilePath = PATH.resolve(linkPath);
         }
 
         options.acornOptions = acornOptions;
