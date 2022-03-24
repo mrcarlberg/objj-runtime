@@ -7,7 +7,7 @@ GLOBAL(objj_eval) = function(/*String*/ aString)
     var url = FILE.join(FILE.cwd(), "/");
 #endif
     Executable.setCommonJSParameters("require", "exports", "module", "system", "print", "window");
-    Executable.setCommonJSArguments(require, exports, module, system, print, window);
+    Executable.setCommonJSArguments(require, exports, module, typeof system !== "undefined" && system, print, window);
 #else
     var url = exports.pageURL;
 #endif
