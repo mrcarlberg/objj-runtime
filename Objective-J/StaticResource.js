@@ -335,6 +335,9 @@ StaticResource.setCurrentCompilerFlags = function(/*JSObject*/ compilerFlags)
         currentCompilerFlags.sourceMap = false;
     if (currentCompilerFlags.inlineMsgSendFunctions == null)
         currentCompilerFlags.inlineMsgSendFunctions = false;
+    var acornOptions = currentCompilerFlags.acornOptions || (currentCompilerFlags.acornOptions = {});
+    if (acornOptions.ecmaVersion == null)
+        acornOptions.ecmaVersion = 2022;
 }
 
 StaticResource.currentCompilerFlags = function(/*JSObject*/ compilerFlags)
