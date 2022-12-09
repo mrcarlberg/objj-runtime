@@ -584,7 +584,7 @@ Executable.printWarningsAndErrors = function(/*ObjJCompiler*/ compiler, /*BOOL*/
         if (printXML)
         {
             var dict = new CFMutableDictionary();
-            if (warning.messageOnLine != null) dict.addValueForKey('line', warning.messageOnLine)
+            if (warning.loc?.line != null) dict.addValueForKey('line', warning.loc.line);
             if (warning.path != null) dict.addValueForKey('sourcePath', new CFURL(warning.path).path())
             if (message != null) dict.addValueForKey('message', message)
 
